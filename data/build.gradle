@@ -1,0 +1,39 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+}
+
+dependencies {
+//    implementation project(':domain')
+
+    def dataDependencies = rootProject.ext.dataDependencies
+    def dataTestDependencies = rootProject.ext.dataTestDependencies
+
+    implementation dataDependencies.kotlin
+
+    implementation dataDependencies.rxJava
+    implementation dataDependencies.rxAndroid
+
+    // retrofit
+    implementation dataDependencies.retrofit
+    implementation dataDependencies.retrofitGsonConverter
+    implementation dataDependencies.retrofitRxJava2Adapter
+    implementation dataDependencies.okhttpLogging
+
+    // Room
+    implementation dataDependencies.room
+    kapt dataDependencies.roomCompiler
+    implementation dataDependencies.roomRxJava
+
+    // Testing
+    testImplementation dataTestDependencies.junit
+    testImplementation dataTestDependencies.okio
+    testImplementation dataTestDependencies.mockito
+    testImplementation dataTestDependencies.nhaarmanMockito
+    testImplementation dataTestDependencies.mockWebServer
+    testImplementation dataTestDependencies.okHttp
+}
