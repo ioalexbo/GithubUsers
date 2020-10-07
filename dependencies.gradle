@@ -27,6 +27,7 @@ ext {
     squareRetrofit = '2.5.0'
     retrofitVersion = '2.7.0'
     loggingInterceptorVersion = '4.2.1'
+    pagingVersion = '2.1.2'
 
     //Testing
     junitVersion = '4.13'
@@ -59,6 +60,8 @@ ext {
             room                  : "androidx.room:room-runtime:$roomVersion",
             roomCompiler          : "androidx.room:room-compiler:$roomVersion",
             retrofit              : "com.squareup.retrofit2:retrofit:$squareRetrofit",
+            paging                : "androidx.paging:paging-runtime-ktx:$pagingVersion",
+            pagingRx              : "androidx.paging:paging-rxjava2:$pagingVersion",
     ]
 
     appTestDependencies = [
@@ -82,6 +85,8 @@ ext {
             room                  : "androidx.room:room-runtime:$roomVersion",
             roomCompiler          : "androidx.room:room-compiler:$roomVersion",
             roomRxJava            : "androidx.room:room-rxjava2:$roomVersion",
+            paging                : "androidx.paging:paging-runtime-ktx:$pagingVersion",
+            pagingRx              : "androidx.paging:paging-rxjava2:$pagingVersion",
     ]
 
     dataTestDependencies = [
@@ -97,6 +102,8 @@ ext {
             kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion",
             rxJava                  : "io.reactivex.rxjava2:rxjava:$rxJavaVersion",
             rxAndroid               : "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion",
+            paging                  : "androidx.paging:paging-runtime-ktx:$pagingVersion",
+            pagingRx                : "androidx.paging:paging-rxjava2:$pagingVersion",
     ]
 
     domainTestDependencies = [

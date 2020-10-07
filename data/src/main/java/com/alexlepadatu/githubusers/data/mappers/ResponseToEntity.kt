@@ -15,10 +15,8 @@ internal fun SearchResponseDto.toEntity(searchString: String): SearchResponseEnt
     )
 }
 
-internal fun GithubUserDto.toEntity(index: Int, searchResponseId: Int): GithubUserEntity {
+internal fun GithubUserDto.toEntity(): GithubUserEntity {
     return GithubUserEntity(0,
-        index,
-        searchResponseId,
         this.login,
         this.avatarUrl,
         this.url,
@@ -31,10 +29,9 @@ internal fun GithubUserDto.toEntity(index: Int, searchResponseId: Int): GithubUs
     )
 }
 
-internal fun List<GithubUserDto>.mapToEntity(lastIndex: Int, searchResponseId: Int)
+internal fun List<GithubUserDto>.mapToEntity()
         : List<GithubUserEntity> {
-    return mapIndexed { index, githubUserDto ->
-        githubUserDto.toEntity(lastIndex + 1 + index,
-            searchResponseId)
+    return map { githubUserDto ->
+        githubUserDto.toEntity()
     }
 }

@@ -16,8 +16,6 @@ import androidx.room.PrimaryKey
 )
 data class GithubUserEntity (
     @PrimaryKey(autoGenerate = true) val id: Int,
-    val indexInSearch: Int,
-    val searchQueryInfoId: Int,
     val login: String,
     val avatarUrl: String,
     val url: String,
@@ -27,4 +25,7 @@ data class GithubUserEntity (
     val reposUrl: String,
     val eventsUrl: String,
     val receivedEventsUrl: String
-)
+) {
+    var indexInSearch: Int = 0
+    var searchQueryInfoId: Int = 0
+}

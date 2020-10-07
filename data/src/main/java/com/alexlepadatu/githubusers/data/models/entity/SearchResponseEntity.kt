@@ -5,7 +5,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "search_responses",
-    indices = [Index(value = ["searchQueryInfoId"])])
+    indices = [Index(value = ["searchString"], unique = true)])
 data class SearchResponseEntity(
     @PrimaryKey(autoGenerate = true) val id: Int,
     val totalCount: Int,

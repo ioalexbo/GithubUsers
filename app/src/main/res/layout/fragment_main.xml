@@ -6,8 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/citiesFragment"
-        android:name="com.alexlepadatu.localweather.ui.fragment.cities.CitiesFragment"
+        android:id="@+id/searchFragment"
+        android:name="com.alexlepadatu.githubusers.search.SearchFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -16,11 +16,11 @@
         />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/forecastFragment"
-        android:name="com.alexlepadatu.localweather.ui.fragment.forecast.ForecastFragment"
+        android:id="@+id/usersFragment"
+        android:name="com.alexlepadatu.githubusers.users.UsersFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toBottomOf="@+id/citiesFragment"
+        app:layout_constraintTop_toBottomOf="@+id/searchFragment"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

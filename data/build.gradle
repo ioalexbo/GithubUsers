@@ -8,7 +8,7 @@ android {
 }
 
 dependencies {
-//    implementation project(':domain')
+    implementation project(':domain')
 
     def dataDependencies = rootProject.ext.dataDependencies
     def dataTestDependencies = rootProject.ext.dataTestDependencies
@@ -28,6 +28,9 @@ dependencies {
     implementation dataDependencies.room
     kapt dataDependencies.roomCompiler
     implementation dataDependencies.roomRxJava
+
+    implementation dataDependencies.paging
+    implementation dataDependencies.pagingRx
 
     // Testing
     testImplementation dataTestDependencies.junit

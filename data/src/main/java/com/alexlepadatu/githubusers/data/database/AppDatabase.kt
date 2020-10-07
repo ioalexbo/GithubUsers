@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import com.alexlepadatu.githubusers.data.database.dao.GithubUserDao
 import com.alexlepadatu.githubusers.data.database.dao.SearchResponseDao
 import com.alexlepadatu.githubusers.data.models.entity.GithubUserEntity
