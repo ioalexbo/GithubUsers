@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:padding="@dimen/contentPaddingHorizontal"
+    android:background="@drawable/bgd_item">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/lblName"

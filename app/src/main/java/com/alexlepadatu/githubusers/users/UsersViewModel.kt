@@ -1,33 +1,42 @@
 package com.alexlepadatu.githubusers.users
 
 import android.util.Log
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.paging.DataSource
+import androidx.lifecycle.*
 import androidx.paging.PagedList
-import androidx.room.paging.LimitOffsetDataSource
-import com.alexlepadatu.githubusers.data.models.entity.GithubUserEntity
 import com.alexlepadatu.githubusers.domain.models.User
+import com.alexlepadatu.githubusers.domain.repository.NetworkState
 import com.alexlepadatu.githubusers.domain.useCase.GitUsersUseCase
 import io.reactivex.disposables.CompositeDisposable
 
 class UsersViewModel (private val useCase: GitUsersUseCase): ViewModel() {
     private val compositeDisposable = CompositeDisposable()
 
-    var searchViewOpen = false
-
     val searchString = MutableLiveData<String>()
 
-    val users = MediatorLiveData<PagedList<User>>().also { mediator ->
+    private val usersBacking = MediatorLiveData<PagedList<User>>().also { mediator ->
         mediator.addSource(searchString) {
             getUsers()
         }
     }
 
+    val users: LiveData<PagedList<User>> = Transformations.map(usersBacking) {
+        it
+    }
+
+    val networkState : LiveData<NetworkState> = MutableLiveData<NetworkState>().also { mutable ->
+        val disposable = useCase.networkState()
+            .subscribe({
+                mutable.postValue(it)
+            }, {
+                Log.e("user vm", "networkState error: $it")
+            })
+
+        compositeDisposable.add(disposable)
+    }
+
     private fun getUsers() {
         val disposable = useCase.getUsers(searchString.value!!)
-            .subscribe({ users.value = it },
+            .subscribe({ usersBacking.value = it },
                 { Log.e("UsersViewModel", "error: $it") })
 
         compositeDisposable.add(disposable)

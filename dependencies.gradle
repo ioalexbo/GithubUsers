@@ -40,6 +40,8 @@ ext {
     archCoreTesting = '2.1.0'
     mockWebServerVersion = '4.0.0'
 
+    glideVersion = '4.11.0'
+
     //App/Presentation Layer
     appDependencies = [
             kotlin                 : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion",
@@ -62,6 +64,7 @@ ext {
             retrofit              : "com.squareup.retrofit2:retrofit:$squareRetrofit",
             paging                : "androidx.paging:paging-runtime-ktx:$pagingVersion",
             pagingRx              : "androidx.paging:paging-rxjava2:$pagingVersion",
+            glide                 : "com.github.bumptech.glide:glide:$glideVersion",
     ]
 
     appTestDependencies = [

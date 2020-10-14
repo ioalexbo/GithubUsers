@@ -2,4 +2,15 @@
     <string name="app_name">GithubUsers</string>
 
     <string name="search">Search&#8230;</string>
+    <string name="loading">Loading&#8230;</string>
+    <string name="retry">Retry</string>
+
+    <string name="login">Login:</string>
+    <string name="url">Url:</string>
+    <string name="htmlUrl">Html url:</string>
+    <string name="followersUrl">Followers url:</string>
+    <string name="organizationsUrl">Organizations url:</string>
+    <string name="reposUrl">Repos url:</string>
+    <string name="eventsUrl">Events url:</string>
+    <string name="receivedEventsUrl">Received events url:</string>
 </resources>

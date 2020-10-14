@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="contentPaddingHorizontal">16dp</dimen>
+    <dimen name="contentPaddingVertical">16dp</dimen>
+    <dimen name="contentPaddingHorizontalHalf">8dp</dimen>
+    <dimen name="contentPaddingVerticalHalf">8dp</dimen>
+
+</resources>

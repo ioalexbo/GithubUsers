@@ -1,5 +1,9 @@
 package com.alexlepadatu.githubusers.domain.models
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class User(
     val indexInSearch: Int,
     val searchQueryInfoId: Int,
@@ -12,7 +16,7 @@ data class User(
     val reposUrl: String,
     val eventsUrl: String,
     val receivedEventsUrl: String
-) {
+): Parcelable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

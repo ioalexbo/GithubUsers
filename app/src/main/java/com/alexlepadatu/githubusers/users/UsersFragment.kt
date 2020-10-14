@@ -1,25 +1,26 @@
 package com.alexlepadatu.githubusers.users
 
 import android.os.Bundle
-import android.view.*
-import android.view.inputmethod.EditorInfo
-import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.alexlepadatu.githubusers.R
+import com.alexlepadatu.githubusers.base.BaseFragment
 import com.alexlepadatu.githubusers.data.api.GitApi
 import com.alexlepadatu.githubusers.data.api.GitApiDataSource
 import com.alexlepadatu.githubusers.data.api.GitService
 import com.alexlepadatu.githubusers.data.database.AppDatabase
 import com.alexlepadatu.githubusers.data.database.UsersDbDataSource
 import com.alexlepadatu.githubusers.data.repository.UsersRepositoryImpl
+import com.alexlepadatu.githubusers.detail.UserDetailFragment
 import com.alexlepadatu.githubusers.domain.useCase.GitUsersUseCaseImpl
-import com.alexlepadatu.meisterlabs.util.DelayedActionHandler
 import com.alexlepadatu.trendingrepos.domain.common.RuntimeSchedulerProvider
 import kotlinx.android.synthetic.main.fragment_users.*
 
-class UsersFragment : Fragment(), SearchView.OnQueryTextListener {
+class UsersFragment : BaseFragment() {
+
     private val viewModel: UsersViewModel by viewModels {
         val executors = RuntimeSchedulerProvider()
         val db = AppDatabase.getInstance(requireContext())
@@ -34,7 +35,13 @@ class UsersFragment : Fragment(), SearchView.OnQueryTextListener {
         )
     }
 
-    private val adapter = UsersPagedListAdapter()
+    private val adapter = UsersPagedListAdapter( {
+//        viewModel.retry()
+    },
+        { user ->
+            val detailFragment = UserDetailFragment.getInstance(user)
+            addFragment(detailFragment)
+        })
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View =
         inflater.inflate(R.layout.fragment_users, container, false)
@@ -42,69 +49,22 @@ class UsersFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setHasOptionsMenu(true)
-
         rvData.adapter = adapter
 
+        initObservables()
+    }
+
+    private fun initObservables() {
         viewModel.users.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
+
+        viewModel.networkState.observe(viewLifecycleOwner, Observer {
+            adapter.setNetworkState(it)
+        })
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.search, menu)
-
-        val searchItem = menu.findItem(R.id.searchBar)
-        val searchView = searchItem.actionView as SearchView
-
-        setupSearchView(searchItem, searchView)
-
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        return false
-    }
-
-    private val delayedSearchHandler = DelayedActionHandler<String?>(400L) { searchString ->
+    fun setSearchString(searchString: String) {
         viewModel.searchString.value = searchString
-    }
-
-    override fun onQueryTextChange(newText: String?): Boolean {
-        delayedSearchHandler.setItem(newText)
-
-        return true
-    }
-
-    private fun setupSearchView(searchItem: MenuItem, searchView: SearchView) {
-        searchView.queryHint = searchItem.title
-        searchView.setOnQueryTextListener(this)
-        searchView.maxWidth = android.R.attr.width
-        searchView.imeOptions = searchView.imeOptions or EditorInfo.IME_FLAG_NO_EXTRACT_UI
-
-        searchView.setOnSearchClickListener {
-            hideSearchInfo()
-        }
-
-        searchView.setOnCloseListener {
-            showSearchInfo()
-            false
-        }
-
-        if (viewModel.searchViewOpen) {     // restore searchView's state
-            searchView.isIconified = false
-
-            searchView.setQuery(viewModel.searchString.value, false)
-        }
-    }
-
-    private fun showSearchInfo() {
-        viewModel.searchViewOpen = false
-//        viewSearchInfo.visibility = View.VISIBLE
-    }
-
-    private fun hideSearchInfo() {
-        viewModel.searchViewOpen = true
-//        viewSearchInfo.visibility = View.GONE
     }
 }

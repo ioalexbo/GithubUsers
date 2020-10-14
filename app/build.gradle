@@ -70,6 +70,9 @@ dependencies {
     implementation appDependencies.paging
     implementation appDependencies.pagingRx
 
+    // Glide
+    implementation appDependencies.glide
+
     // Testing
     testImplementation appTestDependencies.junit
     testImplementation appTestDependencies.mockito

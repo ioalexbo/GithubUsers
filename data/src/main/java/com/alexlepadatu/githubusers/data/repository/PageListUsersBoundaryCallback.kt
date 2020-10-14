@@ -11,9 +11,13 @@ import com.alexlepadatu.githubusers.data.mappers.toEntity
 import com.alexlepadatu.githubusers.data.models.entity.SearchResponseEntity
 import com.alexlepadatu.githubusers.data.models.response.SearchResponseDto
 import com.alexlepadatu.githubusers.domain.models.User
+import com.alexlepadatu.githubusers.domain.repository.NetworkState
 import com.alexlepadatu.trendingrepos.domain.common.SchedulerProvider
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
+import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.ReplaySubject
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -24,6 +28,7 @@ class PageListUsersBoundaryCallback (
 
     private var searchString: String = ""
     private val publisherSearchString = ReplaySubject.create<String>()
+    private val networkState = PublishSubject.create<NetworkState>()
 
     private var isRequestRunning = AtomicBoolean(false)
     private var requestedPage = 1
@@ -36,6 +41,10 @@ class PageListUsersBoundaryCallback (
 
             publisherSearchString.onNext(searchString)
         }
+    }
+
+    fun networkStateObservable(): Flowable<NetworkState> {
+        return networkState.toFlowable(BackpressureStrategy.LATEST)
     }
 
     override fun onZeroItemsLoaded() {
@@ -66,18 +75,17 @@ class PageListUsersBoundaryCallback (
                 .flatMap { string ->
                     if (string.length <= 2) {
                         isRequestRunning.set(false)
-                        return@flatMap Observable.empty<SearchResponseDto>()
-//                        return@flatMap doOnNoFetch()
+                        return@flatMap emptyObservable
                     }
 
                     if (!usersDbDataSource.canStillGetUsersForSearchString(string)) {
                         isRequestRunning.set(false)
-                        return@flatMap Observable.empty<SearchResponseDto>()
-//                        return@flatMap doOnNoFetch()
+                        return@flatMap emptyObservable
                     }
 
+                    networkState.onNext(NetworkState.Loading())
+
                     return@flatMap usersRemoteDataSource.fetchRepos(QueryFilter(string), requestedPage, GitApi.DEFAULT_ITEMS_PER_PAGE)
-        //                .subscribeOn(executors.io())
                         .doOnSuccess {
                             val searchResponseEntity: SearchResponseEntity = it.toEntity(string)
                             val users = it.items.mapToEntity()
@@ -85,6 +93,8 @@ class PageListUsersBoundaryCallback (
                             usersDbDataSource.persistUsersForSearchString(searchResponseEntity, users)
 
                             requestedPage ++
+
+                            networkState.onNext(NetworkState.Success())
                         }
                         .toObservable()
                 }
@@ -99,6 +109,7 @@ class PageListUsersBoundaryCallback (
     //                Log.e("PageListUsersBndryClbk", "Movies Completed: $searchString")
                 },
                     {
+                        networkState.onNext(NetworkState.Failed(it.message))
                         Log.e("PageListUsersBndryClbk", "error: $it")
                     }
                 )
