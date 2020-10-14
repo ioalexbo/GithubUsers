@@ -9,9 +9,13 @@ import com.alexlepadatu.githubusers.data.database.UsersDbDataSource
 import com.alexlepadatu.githubusers.data.mappers.mapToEntity
 import com.alexlepadatu.githubusers.data.mappers.toEntity
 import com.alexlepadatu.githubusers.data.models.entity.SearchResponseEntity
+import com.alexlepadatu.githubusers.data.models.response.SearchResponseDto
 import com.alexlepadatu.githubusers.domain.models.User
 import com.alexlepadatu.trendingrepos.domain.common.SchedulerProvider
+import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
+import io.reactivex.subjects.ReplaySubject
+import java.util.concurrent.atomic.AtomicBoolean
 
 class PageListUsersBoundaryCallback (
     private val executors: SchedulerProvider,
@@ -19,8 +23,9 @@ class PageListUsersBoundaryCallback (
     private val usersDbDataSource: UsersDbDataSource) : PagedList.BoundaryCallback<User>() {
 
     private var searchString: String = ""
+    private val publisherSearchString = ReplaySubject.create<String>()
 
-    private var isRequestRunning = false
+    private var isRequestRunning = AtomicBoolean(false)
     private var requestedPage = 1
     var disposable: Disposable? = null
 
@@ -28,6 +33,8 @@ class PageListUsersBoundaryCallback (
         if (this.searchString != searchString) {
             this.searchString = searchString
             requestedPage = 1
+
+            publisherSearchString.onNext(searchString)
         }
     }
 
@@ -39,25 +46,61 @@ class PageListUsersBoundaryCallback (
         fetchAndStoreUsers()
     }
 
+    private val emptyObservable: Observable<SearchResponseDto> by lazy {
+        Observable.empty<SearchResponseDto>()
+    }
+
+    private val doOnNoFetch : () -> Observable<SearchResponseDto> = {
+        isRequestRunning.set(false)
+        emptyObservable
+    }
+
     private fun fetchAndStoreUsers() {
-        if (isRequestRunning) return
-        isRequestRunning = true
+        if (isRequestRunning.get()) return
 
-        // TODO check if still need to try to fetch
+        disposable?.dispose()
 
-        disposable = usersRemoteDataSource.fetchRepos(QueryFilter(searchString), requestedPage, GitApi.DEFAULT_ITEMS_PER_PAGE)
-            .doOnSuccess {
-                val searchResponseEntity: SearchResponseEntity = it.toEntity(searchString)
-                val users = it.items.mapToEntity()
+        disposable = publisherSearchString
+                .subscribeOn(executors.io())
+                .observeOn(executors.io())
+                .flatMap { string ->
+                    if (string.length <= 2) {
+                        isRequestRunning.set(false)
+                        return@flatMap Observable.empty<SearchResponseDto>()
+//                        return@flatMap doOnNoFetch()
+                    }
 
-                usersDbDataSource.persistUsersForSearchString(searchResponseEntity, users)
+                    if (!usersDbDataSource.canStillGetUsersForSearchString(string)) {
+                        isRequestRunning.set(false)
+                        return@flatMap Observable.empty<SearchResponseDto>()
+//                        return@flatMap doOnNoFetch()
+                    }
 
-                requestedPage ++
-            }
-            .subscribeOn(executors.io())
-            .observeOn(executors.io())
-            .ignoreElement()
-            .doFinally { isRequestRunning = false }
-            .subscribe({ Log.e("PageListUsersBoundaryCallback", "Movies Completed") }, { it.printStackTrace() })
+                    return@flatMap usersRemoteDataSource.fetchRepos(QueryFilter(string), requestedPage, GitApi.DEFAULT_ITEMS_PER_PAGE)
+        //                .subscribeOn(executors.io())
+                        .doOnSuccess {
+                            val searchResponseEntity: SearchResponseEntity = it.toEntity(string)
+                            val users = it.items.mapToEntity()
+
+                            usersDbDataSource.persistUsersForSearchString(searchResponseEntity, users)
+
+                            requestedPage ++
+                        }
+                        .toObservable()
+                }
+                .take(1)
+                .doOnSubscribe {
+                    isRequestRunning.set(true)
+                }
+                .doFinally {
+                    isRequestRunning.set(false)
+                }
+                .subscribe({
+    //                Log.e("PageListUsersBndryClbk", "Movies Completed: $searchString")
+                },
+                    {
+                        Log.e("PageListUsersBndryClbk", "error: $it")
+                    }
+                )
     }
 }

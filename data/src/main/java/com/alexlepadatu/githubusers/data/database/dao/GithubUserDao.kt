@@ -10,14 +10,14 @@ import com.alexlepadatu.trendingrepos.data.base.data.BaseDao
 abstract class GithubUserDao: BaseDao<GithubUserEntity> {
     @Query("""
         SELECT * FROM github_users 
-        WHERE searchQueryInfoId = (SELECT id FROM search_responses WHERE UPPER(searchString) = UPPER(:searchString)) 
+        WHERE searchQueryInfoId = (SELECT id FROM search_responses WHERE LOWER(searchString) = LOWER(:searchString)) 
         ORDER BY indexInSearch ASC
     """)
     abstract fun getUsersForSearchString(searchString: String): DataSource.Factory<Int, GithubUserEntity>
 
     @Query("""
         SELECT COUNT(*) as noUsers FROM github_users 
-        WHERE searchQueryInfoId = (SELECT id FROM search_responses WHERE UPPER(searchString) = UPPER(:searchString))
+        WHERE searchQueryInfoId = (SELECT id FROM search_responses WHERE LOWER(searchString) = LOWER(:searchString))
     """)
     abstract fun getNoOfUsersForSearchString(searchString: String): Int
 }

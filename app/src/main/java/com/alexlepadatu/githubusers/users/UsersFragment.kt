@@ -1,7 +1,6 @@
 package com.alexlepadatu.githubusers.users
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.SearchView
@@ -12,14 +11,12 @@ import com.alexlepadatu.githubusers.R
 import com.alexlepadatu.githubusers.data.api.GitApi
 import com.alexlepadatu.githubusers.data.api.GitApiDataSource
 import com.alexlepadatu.githubusers.data.api.GitService
-import com.alexlepadatu.githubusers.data.api.QueryFilter
 import com.alexlepadatu.githubusers.data.database.AppDatabase
 import com.alexlepadatu.githubusers.data.database.UsersDbDataSource
 import com.alexlepadatu.githubusers.data.repository.UsersRepositoryImpl
 import com.alexlepadatu.githubusers.domain.useCase.GitUsersUseCaseImpl
 import com.alexlepadatu.meisterlabs.util.DelayedActionHandler
 import com.alexlepadatu.trendingrepos.domain.common.RuntimeSchedulerProvider
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_users.*
 
 class UsersFragment : Fragment(), SearchView.OnQueryTextListener {
@@ -50,7 +47,6 @@ class UsersFragment : Fragment(), SearchView.OnQueryTextListener {
         rvData.adapter = adapter
 
         viewModel.users.observe(viewLifecycleOwner, Observer {
-            Log.e("user fragment", "observing: ${it.size}")
             adapter.submitList(it)
         })
     }
@@ -72,16 +68,6 @@ class UsersFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private val delayedSearchHandler = DelayedActionHandler<String?>(400L) { searchString ->
         viewModel.searchString.value = searchString
-
-//        val api = GitApiDataSource(GitService.getRetrofit().create(GitApi::class.java))
-//        api.fetchRepos(QueryFilter(searchString!!), 1)
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(Schedulers.io())
-//            .subscribe({
-//                Log.e("user fr", "fetched: ${it.items.size}")
-//            }, {
-//                Log.e("user fr", "not fetched: $it")
-//            })
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {

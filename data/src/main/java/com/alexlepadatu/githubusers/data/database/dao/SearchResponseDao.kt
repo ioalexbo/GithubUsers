@@ -10,7 +10,7 @@ abstract class SearchResponseDao : BaseDao<SearchResponseEntity> {
 
     @Query("""
         SELECT * FROM search_responses
-        WHERE UPPER(searchString) = UPPER(:searchString)
+        WHERE LOWER(searchString) = LOWER(:searchString)
     """)
     abstract fun getEntity(searchString: String): SearchResponseEntity?
 }

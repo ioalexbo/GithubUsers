@@ -1,5 +1,6 @@
 package com.alexlepadatu.githubusers.data.database
 
+import android.util.Log
 import androidx.paging.DataSource
 import com.alexlepadatu.githubusers.data.database.dao.GithubUserDao
 import com.alexlepadatu.githubusers.data.database.dao.SearchResponseDao
@@ -14,6 +15,7 @@ class UsersDbDataSource (private val daoUsers: GithubUserDao,
 ) {
     fun persistUsersForSearchString(searchResponseEntity: SearchResponseEntity, users: List<GithubUserEntity>) {
         db.runInTransaction {
+
             val existingEntity = daoSearch.getEntity(searchResponseEntity.searchString)
 
             val dbEntity : SearchResponseEntity = if (existingEntity != null) {
@@ -31,11 +33,21 @@ class UsersDbDataSource (private val daoUsers: GithubUserDao,
                 githubUserEntity.indexInSearch = reached + 1 + index
             }
 
+            Log.e("UsersDbDataSource", "persistUsersForSearchString: ${searchResponseEntity.searchString}; users: ${users.size}; inserted: ${users.last().indexInSearch}; total: ${searchResponseEntity.totalCount}")
+
             daoUsers.insertAll(*users.toTypedArray())
         }
     }
 
-    fun getUsersForSearchString(searchString: String): DataSource.Factory<Int, User> =
-        daoUsers.getUsersForSearchString(searchString)
+    fun getUsersForSearchString(searchString: String): DataSource.Factory<Int, User> {
+        return daoUsers.getUsersForSearchString(searchString)
             .map { it.toDomain() }
+    }
+
+    fun canStillGetUsersForSearchString(searchString: String): Boolean {
+        val existingEntity = daoSearch.getEntity(searchString)
+        val noExistingUsers = daoUsers.getNoOfUsersForSearchString(searchString)
+
+        return existingEntity == null || noExistingUsers < existingEntity.totalCount
+    }
 }

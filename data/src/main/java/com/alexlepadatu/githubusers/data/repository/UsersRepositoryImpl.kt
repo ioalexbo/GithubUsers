@@ -7,6 +7,7 @@ import com.alexlepadatu.githubusers.data.database.UsersDbDataSource
 import com.alexlepadatu.githubusers.domain.models.User
 import com.alexlepadatu.githubusers.domain.repository.UsersRepository
 import com.alexlepadatu.trendingrepos.domain.common.SchedulerProvider
+import io.reactivex.BackpressureStrategy
 import io.reactivex.Observable
 
 class UsersRepositoryImpl (
@@ -23,6 +24,7 @@ class UsersRepositoryImpl (
 
         return RxPagedListBuilder(usersDbDataSource.getUsersForSearchString(searchString), 20)
             .setBoundaryCallback(usersBoundaryCallback)
+//            .buildFlowable(BackpressureStrategy.BUFFER)
             .buildObservable()
     }
 

@@ -16,7 +16,7 @@ class SearchFragment : BaseFragment() {
 
         setupFilter()
     }
-
+// TODO USE fragment
     fun setupFilter() {
     }
 }
