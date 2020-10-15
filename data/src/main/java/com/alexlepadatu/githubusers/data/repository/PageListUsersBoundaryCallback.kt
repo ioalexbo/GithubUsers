@@ -1,6 +1,5 @@
 package com.alexlepadatu.githubusers.data.repository
 
-import android.util.Log
 import androidx.paging.PagedList
 import com.alexlepadatu.githubusers.data.api.GitApi
 import com.alexlepadatu.githubusers.data.api.GitApiDataSource
@@ -60,11 +59,6 @@ class PageListUsersBoundaryCallback (
         Observable.empty<SearchResponseDto>()
     }
 
-    private val doOnNoFetch : () -> Observable<SearchResponseDto> = {
-        isRequestRunning.set(false)
-        emptyObservable
-    }
-
     private fun fetchAndStoreUsers() {
         if (isRequestRunning.get()) return
 
@@ -109,11 +103,10 @@ class PageListUsersBoundaryCallback (
                     isRequestRunning.set(false)
                 }
                 .subscribe({
-    //                Log.e("PageListUsersBndryClbk", "Movies Completed: $searchString")
+                    // nothing here
                 },
                     {
                         networkState.onNext(NetworkState.Failed(it.message))
-                        Log.e("PageListUsersBndryClbk", "error: $it")
                     }
                 )
     }

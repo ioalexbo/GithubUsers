@@ -1,6 +1,5 @@
 package com.alexlepadatu.githubusers.data.database
 
-import android.util.Log
 import androidx.paging.DataSource
 import com.alexlepadatu.githubusers.data.database.dao.GithubUserDao
 import com.alexlepadatu.githubusers.data.database.dao.SearchResponseDao
@@ -32,8 +31,6 @@ class UsersDbDataSource (private val daoUsers: GithubUserDao,
                 githubUserEntity.searchQueryInfoId = dbEntity.id
                 githubUserEntity.indexInSearch = reached + 1 + index
             }
-
-            Log.e("UsersDbDataSource", "persistUsersForSearchString: ${searchResponseEntity.searchString}; users: ${users.size}; inserted: ${users.last().indexInSearch}; total: ${searchResponseEntity.totalCount}")
 
             daoUsers.insertAll(*users.toTypedArray())
         }

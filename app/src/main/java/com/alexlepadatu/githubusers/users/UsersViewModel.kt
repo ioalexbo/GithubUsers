@@ -1,6 +1,5 @@
 package com.alexlepadatu.githubusers.users
 
-import android.util.Log
 import androidx.lifecycle.*
 import androidx.paging.PagedList
 import com.alexlepadatu.githubusers.domain.models.User
@@ -28,7 +27,7 @@ class UsersViewModel (private val useCase: GitUsersUseCase): ViewModel() {
             .subscribe({
                 mutable.postValue(it)
             }, {
-                Log.e("user vm", "networkState error: $it")
+                
             })
 
         compositeDisposable.add(disposable)
@@ -37,7 +36,7 @@ class UsersViewModel (private val useCase: GitUsersUseCase): ViewModel() {
     private fun getUsers() {
         val disposable = useCase.getUsers(searchString.value!!)
             .subscribe({ usersBacking.value = it },
-                { Log.e("UsersViewModel", "error: $it") })
+                {  })
 
         compositeDisposable.add(disposable)
     }
