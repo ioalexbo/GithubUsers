@@ -38,13 +38,11 @@
             app:layout_constraintStart_toEndOf="@id/lblLogin"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="@dimen/contentPaddingHorizontalHalf"
-            android:layout_marginEnd="@dimen/contentPaddingHorizontalHalf"
             tools:text="Some user"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lblUrl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/label"
             app:layout_constraintTop_toBottomOf="@+id/imgAvatar"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="@dimen/contentPaddingVerticalHalf"
@@ -52,23 +50,19 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lblUrlValue"
-            style="@style/ellipsizedLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            style="@style/labelValue"
             app:layout_constraintTop_toTopOf="@id/lblUrl"
             app:layout_constraintBottom_toBottomOf="@id/lblUrl"
             app:layout_constraintStart_toEndOf="@id/lblUrl"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="@dimen/contentPaddingHorizontalHalf"
-            android:layout_marginEnd="@dimen/contentPaddingHorizontalHalf"
             android:background="@drawable/bgd_item"
             tools:text="Some user"
             />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lblHtmlUrl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/label"
             app:layout_constraintTop_toBottomOf="@+id/lblUrl"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="@dimen/contentPaddingVerticalHalf"
@@ -76,22 +70,18 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lblHtmlUrlValue"
-            style="@style/ellipsizedLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            style="@style/labelValue"
             app:layout_constraintTop_toTopOf="@id/lblHtmlUrl"
             app:layout_constraintBottom_toBottomOf="@id/lblHtmlUrl"
             app:layout_constraintStart_toEndOf="@id/lblHtmlUrl"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="@dimen/contentPaddingHorizontalHalf"
-            android:layout_marginEnd="@dimen/contentPaddingHorizontalHalf"
             android:background="@drawable/bgd_item"
             tools:text="Some user"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lblFollowersUrl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/label"
             app:layout_constraintTop_toBottomOf="@+id/lblHtmlUrl"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="@dimen/contentPaddingVerticalHalf"
@@ -99,22 +89,18 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lblFollowersUrlValue"
-            style="@style/ellipsizedLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            style="@style/labelValue"
             app:layout_constraintTop_toTopOf="@id/lblFollowersUrl"
             app:layout_constraintBottom_toBottomOf="@id/lblFollowersUrl"
             app:layout_constraintStart_toEndOf="@id/lblFollowersUrl"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="@dimen/contentPaddingHorizontalHalf"
-            android:layout_marginEnd="@dimen/contentPaddingHorizontalHalf"
             android:background="@drawable/bgd_item"
             tools:text="Some user"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lblOrganizationsUrl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/label"
             app:layout_constraintTop_toBottomOf="@+id/lblFollowersUrl"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="@dimen/contentPaddingVerticalHalf"
@@ -122,22 +108,18 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lblOrganizationsUrlValue"
-            style="@style/ellipsizedLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            style="@style/labelValue"
             app:layout_constraintTop_toTopOf="@id/lblOrganizationsUrl"
             app:layout_constraintBottom_toBottomOf="@id/lblOrganizationsUrl"
             app:layout_constraintStart_toEndOf="@id/lblOrganizationsUrl"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="@dimen/contentPaddingHorizontalHalf"
-            android:layout_marginEnd="@dimen/contentPaddingHorizontalHalf"
             android:background="@drawable/bgd_item"
             tools:text="Some user"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lblReposUrl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/label"
             app:layout_constraintTop_toBottomOf="@+id/lblOrganizationsUrl"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="@dimen/contentPaddingVerticalHalf"
@@ -145,22 +127,18 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lblReposUrlValue"
-            style="@style/ellipsizedLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            style="@style/labelValue"
             app:layout_constraintTop_toTopOf="@id/lblReposUrl"
             app:layout_constraintBottom_toBottomOf="@id/lblReposUrl"
             app:layout_constraintStart_toEndOf="@id/lblReposUrl"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="@dimen/contentPaddingHorizontalHalf"
-            android:layout_marginEnd="@dimen/contentPaddingHorizontalHalf"
             android:background="@drawable/bgd_item"
             tools:text="Some user"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lblEventsUrl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/label"
             app:layout_constraintTop_toBottomOf="@+id/lblReposUrl"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="@dimen/contentPaddingVerticalHalf"
@@ -168,22 +146,18 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lblEventsUrlValue"
-            style="@style/ellipsizedLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            style="@style/labelValue"
             app:layout_constraintTop_toTopOf="@id/lblEventsUrl"
             app:layout_constraintBottom_toBottomOf="@id/lblEventsUrl"
             app:layout_constraintStart_toEndOf="@id/lblEventsUrl"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="@dimen/contentPaddingHorizontalHalf"
-            android:layout_marginEnd="@dimen/contentPaddingHorizontalHalf"
             android:background="@drawable/bgd_item"
             tools:text="Some user"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lblReceivedEventsUrl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/label"
             app:layout_constraintTop_toBottomOf="@+id/lblEventsUrl"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="@dimen/contentPaddingVerticalHalf"
@@ -191,15 +165,12 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/lblReceivedEventsUrlValue"
-            style="@style/ellipsizedLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            style="@style/labelValue"
             app:layout_constraintTop_toTopOf="@id/lblReceivedEventsUrl"
             app:layout_constraintBottom_toBottomOf="@id/lblReceivedEventsUrl"
             app:layout_constraintStart_toEndOf="@id/lblReceivedEventsUrl"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="@dimen/contentPaddingHorizontalHalf"
-            android:layout_marginEnd="@dimen/contentPaddingHorizontalHalf"
             android:background="@drawable/bgd_item"
             tools:text="Some user"/>
 

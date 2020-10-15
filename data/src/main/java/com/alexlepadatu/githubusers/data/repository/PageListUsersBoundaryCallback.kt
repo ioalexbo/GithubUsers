@@ -27,7 +27,8 @@ class PageListUsersBoundaryCallback (
     private val usersDbDataSource: UsersDbDataSource) : PagedList.BoundaryCallback<User>() {
 
     private var searchString: String = ""
-    private val publisherSearchString = ReplaySubject.create<String>()
+    private var publisherSearchString = ReplaySubject.create<String>()
+
     private val networkState = PublishSubject.create<NetworkState>()
 
     private var isRequestRunning = AtomicBoolean(false)
@@ -70,6 +71,8 @@ class PageListUsersBoundaryCallback (
         disposable?.dispose()
 
         disposable = publisherSearchString
+            .filter { it == searchString }
+            .distinctUntilChanged()
                 .subscribeOn(executors.io())
                 .observeOn(executors.io())
                 .flatMap { string ->

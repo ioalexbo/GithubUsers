@@ -5,4 +5,6 @@
     <dimen name="contentPaddingHorizontalHalf">8dp</dimen>
     <dimen name="contentPaddingVerticalHalf">8dp</dimen>
 
+    <dimen name="labelHeight">24dp</dimen>
+
 </resources>

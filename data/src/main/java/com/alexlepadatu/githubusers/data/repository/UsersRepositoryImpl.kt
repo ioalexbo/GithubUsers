@@ -21,6 +21,7 @@ class UsersRepositoryImpl (
         usersDbDataSource)
 
     override fun getUsers(searchString: String): Flowable<PagedList<User>> {
+
         usersBoundaryCallback.setSearchString(searchString)
 
         return RxPagedListBuilder(usersDbDataSource.getUsersForSearchString(searchString), 20)
